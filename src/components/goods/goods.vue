@@ -29,21 +29,26 @@
                           <div class="price">
                               <span class="now">￥{{ food.price }}</span><span v-show="food.oldPrice" class="old">￥{{ food.oldPrice }}</span>
                           </div>
-                          <!-- <div class="cartcontrol-wrapper">
+                          <div class="cartcontrol-wrapper">
                             <cartcontrol @add="addFood" :food="food"></cartcontrol>
-                        </div> -->
+                            </div>
                       </div>
                   </li>
               </ul>
           </li>
        </ul>
     </div>
-    <!-- <food :food="selectedFood" ref="food"></food> -->
+    <shopcart ref="shopcart" :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice"
+                :minPrice="seller.minPrice"></shopcart>
+     <food @add="addFood" :food="selectedFood" ref="food"></food>
   </div>
 </template>
 
 <script>
     import BScroll from 'better-scroll';
+    import shopcart from "../shopcart/shopcart";
+    import cartcontrol from "../cartcontrol/cartcontrol";
+    import food from "../food/food";
     export default{
         props:{
             seller:{
@@ -96,6 +101,7 @@
         
         },
         methods:{
+            // 选择类别列表
             selectMenu(index, event) {
                 if (!event._constructed) {
                 return;
@@ -104,6 +110,25 @@
                 let el = foodList[index];
                 console.log(el)
                 this.foodScroll.scrollToElement(el, 300);
+            },
+            // 食物详情
+            selectFood(food, event) {
+                if (!event._constructed) {
+                return;
+                }
+                this.selectedFood = food;
+                console.log(this.selectedFood)
+                this.$refs.food.show();
+            },
+            addFood(target) {
+                console.log(target)
+                this._drop(target);
+            },
+            _drop(target) {
+                // 体验优化,异步执行下落动画
+                this.$nextTick(() => {
+                    this.$refs.shopcart.drop(target);
+                });
             },
             _initScroll() {
                 this.menuScroll = new BScroll(this.$refs.menuWrapper, {
@@ -143,7 +168,9 @@
             }
         },
         components: {
-            // food
+            shopcart,
+            cartcontrol,
+            food
         }
   }
 </script>
@@ -154,7 +181,7 @@
     display: flex;
     position:absolute
     top:17.4rem;
-    bottom:4,6rem;
+    bottom:4.6rem;
     width:100%;
     overflow hidden;
     .menu-wrapper{

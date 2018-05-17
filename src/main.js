@@ -4,6 +4,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VurResource from "vue-resource";
 import App from './App';
+import './common/stylus/index.styl';
 import goods from './components/goods/goods.vue';
 import ratings from './components/ratings/ratings.vue';
 import seller from './components/seller/seller.vue';

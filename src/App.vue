@@ -19,11 +19,14 @@
             </router-link>
           </div>
       </div>
-      <router-view></router-view>
+      <keep-alive>
+        <router-view :seller="seller"></router-view>
+      </keep-alive>
   </div>
 </template>
 
 <script>
+ 
   import header from "./components/header/header.vue";
   import {urlParse} from './common/js/util';
   export default{
@@ -60,7 +63,8 @@
 
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "./common/stylus/mixin.styl"
+  @import "./common/stylus/mixin.styl";
+  
 
   .tab
     display: flex
